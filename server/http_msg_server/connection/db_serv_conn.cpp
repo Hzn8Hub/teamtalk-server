@@ -67,7 +67,7 @@ static void db_server_conn_timer_callback(void* callback_data, uint8_t msg, uint
       pConn->OnTimer(cur_time);
     }
   }
-  
+
   // reconnect DB Storage Server
   // will reconnect in 4s, 8s, 16s, 32s, 64s, 4s 8s ...
   ttserverinfo::serv_check_reconnect<CDBServConn>(g_db_server_list, g_db_server_count);
@@ -252,9 +252,11 @@ void CDBServConn::_HandleCreateGroupRsp(ttnetlib::CImPdu* pPdu) {
 
   char* response_buf = NULL;
   if (result_code != 0) {
-    response_buf = tthttp::PackSendCreateGroupResult(tthttp::HTTP_ERROR_CREATE_GROUP, tthttp::HTTP_ERROR_MSG[10].c_str(), group_id);
+    response_buf =
+      tthttp::PackSendCreateGroupResult(tthttp::HTTP_ERROR_CREATE_GROUP, tthttp::HTTP_ERROR_MSG[10].c_str(), group_id);
   } else {
-    response_buf = tthttp::PackSendCreateGroupResult(tthttp::HTTP_ERROR_SUCCESS, tthttp::HTTP_ERROR_MSG[0].c_str(), group_id);
+    response_buf =
+      tthttp::PackSendCreateGroupResult(tthttp::HTTP_ERROR_SUCCESS, tthttp::HTTP_ERROR_MSG[0].c_str(), group_id);
   }
   pHttpConn->Send(response_buf, (uint32_t)strlen(response_buf));
   pHttpConn->Close();

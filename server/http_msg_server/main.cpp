@@ -23,10 +23,10 @@ namespace {
 using teamtalk::http_server::common::server_config::ServerConfig;
 using teamtalk::http_server::common::server_config::ServerEndpoint;
 
-using teamtalk::http_server::connection::init_db_serv_conn;
-using teamtalk::http_server::connection::init_route_serv_conn;
 using teamtalk::http_server::common::http::CHttpConn;
 using teamtalk::http_server::common::http::init_http_conn;
+using teamtalk::http_server::connection::init_db_serv_conn;
+using teamtalk::http_server::connection::init_route_serv_conn;
 
 namespace ttserverinfo = teamtalk::sbase::server_info;
 namespace ttnetlib = teamtalk::imcore::netlib;
@@ -75,20 +75,24 @@ int main(int argc, char* argv[]) {
 
   if (!cfg.db_servers().empty()) {
     log_info("DB db_server_count: %zu concurrent_db_conn_cnt: %u expanded_db_conn_cnt: %zu.",
-      cfg.db_servers().size(), cfg.concurrent_db_conn_cnt(), cfg.expanded_db_servers().size());
+             cfg.db_servers().size(),
+             cfg.concurrent_db_conn_cnt(),
+             cfg.expanded_db_servers().size());
   }
 
-  int ret = ttnetlib::netlib_init();
-  if (ret == ttnetlib::NETLIB_ERROR)
-    return ret;
+  if (ttnetlib::netlib_init() == ttnetlib::NETLIB_ERROR) {
+    log_error("netlib_init failed, exit... ");
+    return -1;
+  }
 
   for (const auto& addr : cfg.listen_addresses()) {
-    ret = ttnetlib::netlib_listen(addr.c_str(), cfg.listen_port(), http_callback, NULL);
-    if (ret == ttnetlib::NETLIB_ERROR)
-      return ret;
+    if (ttnetlib::netlib_listen(addr.c_str(), cfg.listen_port(), http_callback, NULL) == ttnetlib::NETLIB_ERROR) {
+      log_error("listen on %s:%d failed, exit... ", addr.c_str(), cfg.listen_port());
+      return -1;
+    }
   }
 
-  printf("server start listen on: %s:%d\n", cfg.listen_addresses().front().c_str(), cfg.listen_port());
+  log_info("server start listen on: %s:%d", cfg.listen_addresses().front().c_str(), cfg.listen_port());
 
   init_http_conn();
 
@@ -104,7 +108,7 @@ int main(int argc, char* argv[]) {
     init_route_serv_conn(route_list, route_cnt);
   }
 
-  printf("now enter the event loop...\n");
+  log_info("now enter the event loop...");
 
   ttcommon::write_pid();
 

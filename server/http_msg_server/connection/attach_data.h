@@ -25,8 +25,7 @@ enum {
 
 class CDbAttachData {
  public:
-  CDbAttachData(uint32_t type, uint32_t handle,
-                uint32_t service_type = 0);
+  CDbAttachData(uint32_t type, uint32_t handle, uint32_t service_type = 0);
   CDbAttachData(uchar_t* attach_data, uint32_t attach_len);
   virtual ~CDbAttachData() {}
 
@@ -45,8 +44,7 @@ class CDbAttachData {
 
 class CPduAttachData {
  public:
-  CPduAttachData(
-    uint32_t type, uint32_t handle, uint32_t pduLength, uchar_t* pdu, uint32_t service_type = 0);
+  CPduAttachData(uint32_t type, uint32_t handle, uint32_t pduLength, uchar_t* pdu, uint32_t service_type = 0);
   CPduAttachData(uchar_t* attach_data, uint32_t attach_len);
   virtual ~CPduAttachData() {}
 

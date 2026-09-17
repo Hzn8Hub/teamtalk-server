@@ -112,7 +112,7 @@ void CHttpQuery::DispatchQuery(std::string& url, std::string& post_data, CHttpCo
     pHttpConn->Send((void*)strResponse.c_str(), strResponse.length());
     return;
   }
-  
+
   // process post request with post content
   if (strcmp(url.c_str(), "/query/CreateGroup") == 0) {
     _QueryCreateGroup(strAppKey, value, pHttpConn);

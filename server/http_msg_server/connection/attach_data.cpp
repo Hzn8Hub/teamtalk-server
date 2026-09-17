@@ -25,7 +25,8 @@ CDbAttachData::CDbAttachData(uchar_t* attach_data, uint32_t attach_len) {
 }
 
 // 序列化
-CPduAttachData::CPduAttachData(uint32_t type, uint32_t handle, uint32_t pduLength, uchar_t* pdu, uint32_t service_type) {
+CPduAttachData::CPduAttachData(
+  uint32_t type, uint32_t handle, uint32_t pduLength, uchar_t* pdu, uint32_t service_type) {
   ttnetlib::CByteStream os(&m_buf, 0);
   os << type;
   os << handle;

@@ -152,7 +152,7 @@ void CHttpConn::OnRead() {
 
   // log_info("OnRead, buf_len=%u, conn_handle=%u\n", buf_len, m_conn_handle);
   // // for debug
-  
+
   m_HttpParser.ParseHttpContent(in_buf, buf_len);
 
   if (m_HttpParser.IsReadAll()) {
